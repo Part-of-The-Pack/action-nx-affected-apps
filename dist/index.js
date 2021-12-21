@@ -551,12 +551,9 @@ function run(workspace = '.') {
                 head,
                 workspace: GITHUB_WORKSPACE
             });
-            const appsString = JSON.stringify(apps);
-            core.setOutput('affected_apps', appsString);
-            core.exportVariable('NX_AFFECTED_APPS', appsString);
-            core.exportVariable('NX_AFFECTED_APPS_ARRAY', apps);
-            core.exportVariable('NX_AFFECTED_APPS_WITH_IDENTIFIER', JSON.stringify(apps.map(app => `_${app}_`)));
-            core.info(`Found these affected apps: \n ${appsString}`);
+            core.setOutput('affected_apps', apps);
+            core.exportVariable('NX_AFFECTED_APPS', apps);
+            core.info(`Found these affected apps: \n ${apps}`);
         }
         catch (error) {
             core.setFailed(error.message);
