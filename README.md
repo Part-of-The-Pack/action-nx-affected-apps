@@ -22,6 +22,7 @@ SHA of the commit to compare **from** (defaults to `origin/master~1`)
 ## Outputs
 
 >Along with setting an output, this also sets an env variable in the workflow: `NX_AFFECTED_APPS`
+>Along with setting an output, this also sets an env variable in the workflow: `NX_AFFECTED_APPS_WITH_IDENTIFIER`. Used to uniquely identify an app by using `_api_`
 
 ### `affected_apps`
 
