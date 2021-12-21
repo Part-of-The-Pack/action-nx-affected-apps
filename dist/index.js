@@ -75,27 +75,37 @@ function getNxAffectedApps({ base, head, workspace }) {
             cwd: workspace
         }).toString();
     }
-    catch (e) {
-        core.debug(`first attempt failed: ${e.message}`);
+    catch (e0) {
         try {
-            const cmd = `./node_modules/.bin/nx affected:apps ${args}`;
-            core.debug(`Attempting from node modules: ${cmd}`);
+            core.debug(`yarn attempt failed: ${e0.message}`);
+            const cmd = `npm run nx -- affected:apps ${args}`;
+            core.debug(`Attempting npm script: ${cmd}`);
             result = child_process_1.execSync(cmd, {
                 cwd: workspace
             }).toString();
         }
-        catch (e2) {
+        catch (e1) {
+            core.debug(`npm attempt failed: ${e1.message}`);
             try {
-                core.debug(`second attempt failed: ${e2.message}`);
-                const cmd = `nx affected:apps ${args}`;
-                core.debug(`Attempting global npm bin: ${cmd}`);
+                const cmd = `./node_modules/.bin/nx affected:apps ${args}`;
+                core.debug(`Attempting from node modules: ${cmd}`);
                 result = child_process_1.execSync(cmd, {
                     cwd: workspace
                 }).toString();
             }
-            catch (e3) {
-                core.debug(`third attempt failed: ${e3.message}`);
-                throw Error('Could not run NX cli...Did you install it globally and in your project? Also, try adding this npm script: "nx":"nx"');
+            catch (e2) {
+                try {
+                    core.debug(`.node_modules/.bin attempt failed: ${e2.message}`);
+                    const cmd = `nx affected:apps ${args}`;
+                    core.debug(`Attempting global npm bin: ${cmd}`);
+                    result = child_process_1.execSync(cmd, {
+                        cwd: workspace
+                    }).toString();
+                }
+                catch (e3) {
+                    core.debug(`global nx attempt failed: ${e3.message}`);
+                    throw Error('Could not run NX cli...Did you install it globally and in your project? Also, try adding this npm script: "nx":"nx"');
+                }
             }
         }
     }
@@ -541,10 +551,10 @@ function run(workspace = '.') {
                 head,
                 workspace: GITHUB_WORKSPACE
             });
-            const appsString = JSON.stringify(apps);
-            core.setOutput('affected_apps', appsString);
-            core.exportVariable('NX_AFFECTED_APPS', appsString);
-            core.info(`Found these affected apps: \n ${appsString}`);
+            core.setOutput('affected_apps', apps);
+            core.exportVariable('NX_AFFECTED_APPS', apps);
+            core.exportVariable('NX_AFFECTED_APPS_WITH_IDENTIFIER', JSON.stringify(apps.map(app => `_${app}_`)));
+            core.info(`Found these affected apps: \n ${apps}`);
         }
         catch (error) {
             core.setFailed(error.message);
