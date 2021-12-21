@@ -553,6 +553,7 @@ function run(workspace = '.') {
             });
             core.setOutput('affected_apps', apps);
             core.exportVariable('NX_AFFECTED_APPS', apps);
+            core.exportVariable('NX_AFFECTED_APPS_WITH_IDENTIFIER', JSON.stringify(apps.map(app => `_${app}_`)));
             core.info(`Found these affected apps: \n ${apps}`);
         }
         catch (error) {
