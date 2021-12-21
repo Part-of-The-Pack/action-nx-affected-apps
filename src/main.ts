@@ -24,9 +24,14 @@ export async function run(workspace: string = '.'): Promise<void> {
 
         core.setOutput('affected_apps', appsString)
         core.exportVariable('NX_AFFECTED_APPS', appsString)
+        core.exportVariable('NX_AFFECTED_APPS_ARRAY', apps)
+        core.exportVariable(
+            'NX_AFFECTED_APPS_WITH_IDENTIFIER',
+            JSON.stringify(apps.map(app => `_${app}_`))
+        )
         core.info(`Found these affected apps: \n ${appsString}`)
     } catch (error) {
-        core.setFailed(error.message)
+        core.setFailed((error as Error).message)
     }
 }
 
