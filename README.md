@@ -2,6 +2,8 @@
   <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
 </p>
 
+# Package is probably deprecated ; can probably be removed
+
 # action-nx-affected-apps
 A Github Action to determine the affected apps within an Nx Monorepo.
 
